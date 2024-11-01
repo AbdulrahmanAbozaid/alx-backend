@@ -43,7 +43,7 @@ class Server:
     def get_hyper_index(self, index: int = None, page_size: int = 10) -> Dict:
         """Return page data with deletion-resilient pagination."""
         assert index is not None and\
-        0 <= index < len(self.__indexed_dataset), "Index out of range."
+            0 <= index < len(self.__indexed_dataset), "Index out of range."
 
         # Initialize pagination data
         data = []
