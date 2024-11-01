@@ -43,6 +43,7 @@ class Server:
         return self.__dataset
 
     def get_page(self, page: int = 1, page_size: int = 10) -> List[List]:
+        """Get the Paging Done"""
         assert (isinstance(page, int) and page > 0)
         assert (isinstance(page_size, int) and page_size > 0)
         data = self.dataset()
@@ -55,6 +56,7 @@ class Server:
         return data[indecies[0]:indecies[1]]
 
     def get_hyper(self, page: int = 1, page_size: int = 10) -> List[List]:
+        """Hyparize the Paging"""
         data = self.get_page(page, page_size)
         all_data = self.dataset()
         total_items = len(all_data)
