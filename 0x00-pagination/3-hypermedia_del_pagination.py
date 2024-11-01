@@ -41,23 +41,27 @@ class Server:
         return self.__indexed_dataset
 
     def get_hyper_index(self, index: int = None, page_size: int = 10) -> Dict:
-        """The method should return a dictionary
-        with the following key-value pairs"""
-        data = self.indexed_dataset()
-        total_items = len(data)
-        assert (index >= 0 and index < total_items)
-        curr_ind = index
+        """Return page data with deletion-resilient pagination."""
+        assert index is not None and\
+        0 <= index < len(self.__indexed_dataset), "Index out of range."
 
-        for ind, el in enumerate(data):
-            if el == index:
-                curr_ind = ind
-                break
+        # Initialize pagination data
+        data = []
+        current_index = index
+        dataset_len = len(self.__indexed_dataset)
+
+        # Collect items for the current page, skipping missing entries
+        while len(data) < page_size and current_index < dataset_len:
+            if current_index in self.__indexed_dataset:
+                data.append(self.__indexed_dataset[current_index])
+            current_index += 1
+
+        # Set next_index as the first available index after the current page
+        next_index = current_index
 
         return {
-            "index": index,
-            "next_index": list(data)[
-                curr_ind + page_size
-                ] if index + page_size < total_items else None,
-            "page_size": page_size,
-            "data": list(data.values())[index:index+page_size],
+            'index': index,
+            'data': data,
+            'page_size': len(data),
+            'next_index': next_index
         }
