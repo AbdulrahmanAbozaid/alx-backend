@@ -5,7 +5,8 @@ from base_caching import BaseCaching
 
 
 class LFUCache(BaseCaching):
-    """ LFUCache class that inherits from BaseCaching and implements an LFU cache """
+    """ LFUCache class that inherits from
+    BaseCaching and implements an LFU cache """
 
     def __init__(self):
         """ Initialize the LFUCache """
@@ -28,11 +29,13 @@ class LFUCache(BaseCaching):
             if len(self.cache_data) >= BaseCaching.MAX_ITEMS:
                 # Find the least frequently used key(s)
                 min_freq = min(self.frequency.values())
-                lfu_keys = [k for k, freq in self.frequency.items() if freq == min_freq]
+                lfu_keys = [k for k, freq in self.frequency.items()
+                            if freq == min_freq]
 
                 # If there's a tie, remove the least recently used (oldest)
                 if len(lfu_keys) > 1:
-                    oldest_key = min(lfu_keys, key=lambda k: self.usage_order[k])
+                    oldest_key = min(lfu_keys,
+                                     key=lambda k: self.usage_order[k])
                 else:
                     oldest_key = lfu_keys[0]
 
@@ -54,5 +57,5 @@ class LFUCache(BaseCaching):
 
         # Update the frequency and usage order for the accessed key
         self.frequency[key] += 1
-        self.usage_order[key] = self.frequency[key]  # Update usage order to current frequency
+        self.usage_order[key] = self.frequency[key]
         return self.cache_data[key]
