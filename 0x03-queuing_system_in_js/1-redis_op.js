@@ -1,5 +1,4 @@
 import redis from 'redis';
-import { promisify } from 'util';
 
 const client = redis.createClient();
 client.on('connect', () => {
@@ -23,14 +22,14 @@ function setNewSchool(schoolName, value) {
  * Display the value of a school from Redis.
  * @param {string} schoolName - The key for the school.
  */
-async function displaySchoolValue(schoolName) {
-  try {
-    const value = await promisify(client.get).bind(client)(schoolName);
+function displaySchoolValue(schoolName) {
+  client.get(schoolName, (err, value) => {
+    if (err) {
+      console.error('Error retrieving value:', err.message);
+      return;
+    }
     console.log(value);
-  } catch (error) {
-    console.error('Error retrieving value:', err.message);
-    return;
-  }
+  });
 }
 
 displaySchoolValue('ALX');
