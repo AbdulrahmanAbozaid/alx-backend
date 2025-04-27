@@ -25,7 +25,7 @@ app.config.from_object(Config)
 babel = Babel(app)
 
 
-def get_user() -> None | dict:
+def get_user():
     """returns a user dictionary"""
     print(request.args.get("login_as"))
     if not request.args.get("login_as"):
