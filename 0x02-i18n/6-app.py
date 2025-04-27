@@ -55,6 +55,14 @@ def get_locale():
     )
 
 
+@babel.timezoneselector
+def get_timezone():
+    """Get the time zone"""
+    user = getattr(g, "user", None)
+    if user:
+        return user.timezone
+
+
 @app.route("/")
 def hello():
     """Main entry"""
