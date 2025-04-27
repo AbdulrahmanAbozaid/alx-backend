@@ -42,8 +42,10 @@ def before_request():
 @babel.localeselector
 def get_locale():
     """Get the best locale"""
-    return request.args.get("locale") or request.accept_languages.best_match(
-        ["en", "fr"]
+    return (
+        request.args.get("locale")
+        or (g.get("user") and g.get("user").get("locale"))
+        or request.accept_languages.best_match(["en", "fr"])
     )
 
 
