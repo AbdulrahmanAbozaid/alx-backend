@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Minimal app"""
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template, g
 from flask_babel import Babel
 
 
@@ -23,15 +23,33 @@ users = {
 }
 
 
+def get_user() -> None | dict:
+    """returns a user dictionary"""
+    print(request.args.get("login_as"))
+    if not request.args.get("login_as"):
+        return None
+    return users.get(int(request.args.get("login_as")), None)
+
+
+@app.before_request
+def before_request():
+    """use get_user to find a user if any, and set it as a global on g.user."""
+    g.user = get_user()
+
+
 @babel.localeselector
 def get_locale():
     """Get the best locale"""
     return request.args.get("locale") or request.accept_languages.best_match(
-        ["en", "ar"]
+        ["en", "fr"]
     )
 
 
 @app.route("/")
 def hello():
     """Main entry"""
-    return render_template("0-index.html")
+    return render_template("5-index.html")
+
+
+if __name__ == "__main__":
+    app.run(debug=True, port=3000)
