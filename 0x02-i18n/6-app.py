@@ -44,8 +44,14 @@ def get_locale():
     """Get the best locale"""
     return (
         request.args.get("locale")
-        or (g.get("user") and g.get("user").get("locale"))
-        or request.accept_languages.best_match(["en", "fr"])
+        or (
+            g.get("user")
+            and (
+                g.get("user").get("locale") in Config.LANGUAGES
+                and g.get("user").get("locale")
+            )
+        )
+        or request.accept_languages.best_match(Config.LANGUAGES)
     )
 
 
