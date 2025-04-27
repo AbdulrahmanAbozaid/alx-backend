@@ -73,7 +73,9 @@ def get_timezone() -> str:
 @app.route("/")
 def hello():
     """Main entry"""
-    return render_template("7-index.html", current_time=format_datetime(datetime.now()))
+    return render_template("7-index.html", current_time=format_datetime(
+        datetime.now())
+                           )
 
 
 if __name__ == "__main__":
